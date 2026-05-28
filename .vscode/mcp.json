@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "APS MCP Server": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["index.js"]
+    }
+  }
+}
