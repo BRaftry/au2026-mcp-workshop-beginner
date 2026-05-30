@@ -4,6 +4,7 @@
 
 Use GitHub Copilot to add a new feature to your MCP server. Some ideas:
 
+- **Search project by name**: update the hub/project listing tool so that it accepts an optional project name to search for
 - **List issues**: add a tool that lists issues in a project using the [Forma Issues API](https://aps.autodesk.com/en/docs/acc/v1/overview/field-guide/issues/)
 - **Search by name**: add a tool that searches for files by name across all folders in a project
 - **Recent changes skill**: extend the `forma-weekly-update` skill to send the summary as a formatted email draft
