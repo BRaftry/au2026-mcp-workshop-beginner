@@ -41,6 +41,7 @@ export function createMcpServer(authenticationProvider) {
     });
 
     // TODO: register the list-hubs-projects tool
+
     // TODO: register the list-folder-contents tool
 
     return server;
@@ -61,14 +62,7 @@ Replace the first `// TODO` comment with the following tool registration:
         },
         async () => {
             const hubs = await getHubsProjects(authenticationProvider);
-            const lines = [];
-            for (const hub of hubs) {
-                lines.push(`- Hub: ${hub.name} (ID: ${hub.id}, region: ${hub.region})`);
-                for (const project of hub.projects) {
-                    lines.push(`  - Project: ${project.name} (ID: ${project.id})`);
-                }
-            }
-            return { content: [{ type: 'text', text: lines.join('\n') }] };
+            return { content: [{ type: 'text', text: JSON.stringify(hubs, null, 2) }] };
         }
     );
 ```
@@ -94,22 +88,14 @@ Replace the second `// TODO` comment with:
         },
         async ({ hubId, projectId, folderId }) => {
             const items = await getFolderContents(hubId, projectId, folderId, authenticationProvider);
-            const lines = [];
-            for (const item of items) {
-                if (item.type === 'folders') {
-                    lines.push(`- Folder: ${item.name} (ID: ${item.id})`);
-                } else if (item.type === 'items') {
-                    lines.push(`- File: ${item.name} (ID: ${item.id}, Last modified at ${item.modifiedAt} by ${item.modifiedBy})`);
-                }
-            }
-            return { content: [{ type: 'text', text: lines.join('\n') }] };
+            return { content: [{ type: 'text', text: JSON.stringify(items, null, 2) }] };
         }
     );
 ```
 
 This tool has a typed input schema defined with [Zod](https://zod.dev). The schema is passed as `inputSchema` inside the options object, wrapped in `z.object({...})`. The `.describe()` calls on each field tell the AI what to pass — the AI reads these descriptions to fill in arguments automatically from context.
 
-`folderId` is marked `.optional()`, which lets the AI omit it when it wants top-level folders rather than the contents of a specific folder. The handler distinguishes between `folders` and `items` (files) to produce cleaner output.
+`folderId` is marked `.optional()`, which lets the AI omit it when it wants top-level folders rather than the contents of a specific folder.
 
 ## Step 3: Update the app
 
@@ -179,6 +165,7 @@ import { getHubsProjects, getFolderContents } from './aps.js';
 export function createMcpServer(authenticationProvider) {
     const server = new McpServer({
         name: 'aps-mcp-server',
+        description: 'MCP server for Autodesk Platform Services',
         version: '1.0.0'
     });
 
@@ -189,14 +176,7 @@ export function createMcpServer(authenticationProvider) {
         },
         async () => {
             const hubs = await getHubsProjects(authenticationProvider);
-            const lines = [];
-            for (const hub of hubs) {
-                lines.push(`- Hub: ${hub.name} (ID: ${hub.id}, region: ${hub.region})`);
-                for (const project of hub.projects) {
-                    lines.push(`  - Project: ${project.name} (ID: ${project.id})`);
-                }
-            }
-            return { content: [{ type: 'text', text: lines.join('\n') }] };
+            return { content: [{ type: 'text', text: JSON.stringify(hubs, null, 2) }] };
         }
     );
 
@@ -212,15 +192,7 @@ export function createMcpServer(authenticationProvider) {
         },
         async ({ hubId, projectId, folderId }) => {
             const items = await getFolderContents(hubId, projectId, folderId, authenticationProvider);
-            const lines = [];
-            for (const item of items) {
-                if (item.type === 'folders') {
-                    lines.push(`- Folder: ${item.name} (ID: ${item.id})`);
-                } else if (item.type === 'items') {
-                    lines.push(`- File: ${item.name} (ID: ${item.id}, Last modified at ${item.modifiedAt} by ${item.modifiedBy})`);
-                }
-            }
-            return { content: [{ type: 'text', text: lines.join('\n') }] };
+            return { content: [{ type: 'text', text: JSON.stringify(items, null, 2) }] };
         }
     );
 

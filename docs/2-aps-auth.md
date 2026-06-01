@@ -55,12 +55,11 @@ export class AppAuthenticationProvider {
     }
 
     async getAccessToken() {
-        if (this.cache.expiresAt > Date.now()) {
-            return this.cache.accessToken;
+        if (this.cache.expiresAt < Date.now()) {
+            const credentials = await this.authClient.getTwoLeggedToken(this.clientId, this.clientSecret, SCOPES);
+            this.cache.accessToken = credentials.access_token;
+            this.cache.expiresAt = Date.now() + credentials.expires_in * 1000;
         }
-        const credentials = await this.authClient.getTwoLeggedToken(this.clientId, this.clientSecret, SCOPES);
-        this.cache.accessToken = credentials.access_token;
-        this.cache.expiresAt = Date.now() + credentials.expires_in * 1000;
         return this.cache.accessToken;
     }
 }
@@ -170,12 +169,11 @@ export class AppAuthenticationProvider {
     }
 
     async getAccessToken() {
-        if (this.cache.expiresAt > Date.now()) {
-            return this.cache.accessToken;
+        if (this.cache.expiresAt < Date.now()) {
+            const credentials = await this.authClient.getTwoLeggedToken(this.clientId, this.clientSecret, SCOPES);
+            this.cache.accessToken = credentials.access_token;
+            this.cache.expiresAt = Date.now() + credentials.expires_in * 1000;
         }
-        const credentials = await this.authClient.getTwoLeggedToken(this.clientId, this.clientSecret, SCOPES);
-        this.cache.accessToken = credentials.access_token;
-        this.cache.expiresAt = Date.now() + credentials.expires_in * 1000;
         return this.cache.accessToken;
     }
 }

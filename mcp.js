@@ -1,5 +1,5 @@
-import { z } from 'zod';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { z } from 'zod';
 import { getHubsProjects, getFolderContents } from './aps.js';
 
 export function createMcpServer(authenticationProvider) {
@@ -16,14 +16,7 @@ export function createMcpServer(authenticationProvider) {
         },
         async () => {
             const hubs = await getHubsProjects(authenticationProvider);
-            const lines = [];
-            for (const hub of hubs) {
-                lines.push(`- Hub: ${hub.name} (ID: ${hub.id}, region: ${hub.region})`);
-                for (const project of hub.projects) {
-                    lines.push(`  - Project: ${project.name} (ID: ${project.id})`);
-                }
-            }
-            return { content: [{ type: 'text', text: lines.join('\n') }] };
+            return { content: [{ type: 'text', text: JSON.stringify(hubs, null, 2) }] };
         }
     );
 
@@ -39,15 +32,7 @@ export function createMcpServer(authenticationProvider) {
         },
         async ({ hubId, projectId, folderId }) => {
             const items = await getFolderContents(hubId, projectId, folderId, authenticationProvider);
-            const lines = [];
-            for (const item of items) {
-                if (item.type === 'folders') {
-                    lines.push(`- Folder: ${item.name} (ID: ${item.id})`);
-                } else if (item.type === 'items') {
-                    lines.push(`- File: ${item.name} (ID: ${item.id}, Last modified at ${item.modifiedAt} by ${item.modifiedBy})`);
-                }
-            }
-            return { content: [{ type: 'text', text: lines.join('\n') }] };
+            return { content: [{ type: 'text', text: JSON.stringify(items, null, 2) }] };
         }
     );
 
