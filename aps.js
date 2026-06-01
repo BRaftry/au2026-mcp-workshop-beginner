@@ -27,28 +27,23 @@ export class AppAuthenticationProvider {
 
 export async function getHubsProjects(authenticationProvider) {
     const client = new DataManagementClient({ authenticationProvider });
-    const response = await client.getHubs();
-    const hubs = response.data || [];
-    const results = [];
-    for (const hub of hubs) {
-        const response = await client.getHubProjects(hub.id);
-        const projects = response.data || [];
-        results.push({
+    const { data: hubs = [] } = await client.getHubs();
+    return Promise.all(hubs.map(async hub => {
+        const { data: projects = [] } = await client.getHubProjects(hub.id);
+        return {
             id: hub.id,
             name: hub.attributes.name,
             region: hub.attributes.region,
             projects: projects.map(p => ({ id: p.id, name: p.attributes.name }))
-        });
-    }
-    return results;
+        };
+    }));
 }
 
 export async function getFolderContents(hubId, projectId, folderId, authenticationProvider) {
     const client = new DataManagementClient({ authenticationProvider });
-    const response = folderId
+    const { data: items = [] } = folderId
         ? await client.getFolderContents(projectId, folderId)
         : await client.getProjectTopFolders(hubId, projectId);
-    const items = response.data || [];
     return items.map(item => ({
         type: item.type,
         id: item.id,

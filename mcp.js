@@ -1,10 +1,11 @@
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { getHubsProjects, getFolderContents } from './aps.js';
 
 export function createMcpServer(authenticationProvider) {
     const server = new McpServer({
         name: 'aps-mcp-server',
+        description: 'MCP server for Autodesk Platform Services',
         version: '1.0.0'
     });
 
