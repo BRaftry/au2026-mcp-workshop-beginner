@@ -85,7 +85,7 @@ Confirm your skill file is in the right place:
 ### Try it out
 
 1. Open the **Copilot Chat** panel in VS Code (`Ctrl+Shift+I` / `Cmd+Shift+I`).
-2. Make sure your MCP server is configured and running (see [Part 3](3-server-tools.md)).
+2. Make sure your MCP server is configured and running (see [Part 3](3-mcp-tools.md)).
 3. Type the following prompt:
 
    ```text
