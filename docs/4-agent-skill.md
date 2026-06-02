@@ -38,7 +38,7 @@ mkdir -p .github/skills/forma-weekly-update
 
 Create `.github/skills/forma-weekly-update/SKILL.md` with the following content:
 
-```markdown
+````markdown
 ---
 name: forma-weekly-update
 description: Generates a summary of file changes in a given Forma project for the last 7 days, or for a specific date range if provided.
@@ -59,15 +59,20 @@ Generate a summary of recent changes in a Forma project using the available MCP 
    - When it was modified
 5. Present the output as a readable summary, for example:
 
-        ## Weekly Update — [Project Name]
-        Period: [start date] to [end date]
+```
+## Weekly Update — [Project Name]
+Period: [start date] to [end date]
 
-        ### [Folder Name]
-        - **[File Name]** — modified by [User] on [Date]
-        - ...
+### [Folder Name]
+- **[File Name]** — modified by [User] on [Date]
+- ...
+
+### [Another Folder]
+- ...
+```
 
 If no changes were found in the period, say so clearly.
-```
+````
 
 > **Tip:** Keep the instructions concrete but agent-neutral. Avoid naming specific API endpoints or coding patterns — the agent will use whatever tools are available to satisfy each step.
 

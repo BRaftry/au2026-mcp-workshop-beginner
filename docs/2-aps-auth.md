@@ -78,24 +78,20 @@ This helper creates a `DataManagementClient` backed by your authentication provi
 ```js
 export async function getHubsProjects(authenticationProvider) {
     const client = new DataManagementClient({ authenticationProvider });
-    const response = await client.getHubs();
-    const hubs = response.data || [];
-    const results = [];
-    for (const hub of hubs) {
-        const response = await client.getHubProjects(hub.id);
-        const projects = response.data || [];
-        results.push({
+    const { data: hubs = [] } = await client.getHubs();
+    return Promise.all(hubs.map(async hub => {
+        const { data: projects = [] } = await client.getHubProjects(hub.id);
+        return {
             id: hub.id,
             name: hub.attributes.name,
             region: hub.attributes.region,
             projects: projects.map(p => ({ id: p.id, name: p.attributes.name }))
-        });
-    }
-    return results;
+        };
+    }));
 }
 ```
 
-Notice that `DataManagementClient` receives `{ authenticationProvider }` — the SDK calls `getAccessToken` internally whenever it needs a token. You never see the raw token string outside of the provider class.
+Notice that `DataManagementClient` receives `{ authenticationProvider }` — the SDK calls `getAccessToken` internally whenever it needs a token. You never see the raw token string outside of the provider class. `Promise.all` fetches all hubs' projects concurrently, and the destructuring assignment with default values keeps the code compact.
 
 ## Step 3: List folder contents
 
@@ -104,10 +100,9 @@ This helper returns the contents of a folder, or — when no `folderId` is given
 ```js
 export async function getFolderContents(hubId, projectId, folderId, authenticationProvider) {
     const client = new DataManagementClient({ authenticationProvider });
-    const response = folderId
+    const { data: items = [] } = folderId
         ? await client.getFolderContents(projectId, folderId)
         : await client.getProjectTopFolders(hubId, projectId);
-    const items = response.data || [];
     return items.map(item => ({
         type: item.type,
         id: item.id,
@@ -180,28 +175,23 @@ export class AppAuthenticationProvider {
 
 export async function getHubsProjects(authenticationProvider) {
     const client = new DataManagementClient({ authenticationProvider });
-    const response = await client.getHubs();
-    const hubs = response.data || [];
-    const results = [];
-    for (const hub of hubs) {
-        const response = await client.getHubProjects(hub.id);
-        const projects = response.data || [];
-        results.push({
+    const { data: hubs = [] } = await client.getHubs();
+    return Promise.all(hubs.map(async hub => {
+        const { data: projects = [] } = await client.getHubProjects(hub.id);
+        return {
             id: hub.id,
             name: hub.attributes.name,
             region: hub.attributes.region,
             projects: projects.map(p => ({ id: p.id, name: p.attributes.name }))
-        });
-    }
-    return results;
+        };
+    }));
 }
 
 export async function getFolderContents(hubId, projectId, folderId, authenticationProvider) {
     const client = new DataManagementClient({ authenticationProvider });
-    const response = folderId
+    const { data: items = [] } = folderId
         ? await client.getFolderContents(projectId, folderId)
         : await client.getProjectTopFolders(hubId, projectId);
-    const items = response.data || [];
     return items.map(item => ({
         type: item.type,
         id: item.id,
