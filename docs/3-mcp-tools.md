@@ -141,7 +141,9 @@ Create the `.vscode/` directory if it doesn't exist, then create `.vscode/mcp.js
 }
 ```
 
-VS Code reads this file and, when you open Copilot Chat in agent mode, it automatically starts `node index.js` as a child process and connects to it over STDIO.
+VS Code reads this file and, when you open Copilot Chat in agent mode, it automatically starts `node index.js` as a child process and connects to it over STDIO. You don't need to run the server yourself in a terminal.
+
+> **After editing `mcp.js`, `aps.js`, or `index.js`:** click the **Restart** action above the server definition in `mcp.json` (or stop and start it again). Copilot keeps using the previously-loaded build of the server until you restart it, which is the most common source of "my change didn't take effect" confusion.
 
 > **Note:** The `APS_CLIENT_ID` and `APS_CLIENT_SECRET` environment variables are injected by your Codespace secrets — you don't need to add them here.
 
@@ -203,20 +205,56 @@ export function createMcpServer(authenticationProvider) {
 
 </details>
 
+<details>
+    <summary>
+        Reference: full <code>index.js</code>
+    </summary>
+
+```js
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { AppAuthenticationProvider } from './aps.js';
+import { createMcpServer } from './mcp.js';
+
+const { APS_CLIENT_ID, APS_CLIENT_SECRET } = process.env;
+if (!APS_CLIENT_ID || !APS_CLIENT_SECRET) {
+    console.error('APS_CLIENT_ID and APS_CLIENT_SECRET environment variables are required.');
+    process.exit(1);
+}
+
+const authenticationProvider = new AppAuthenticationProvider(APS_CLIENT_ID, APS_CLIENT_SECRET);
+const server = createMcpServer(authenticationProvider);
+const transport = new StdioServerTransport();
+await server.connect(transport);
+```
+
+</details>
+
 ### Try it out
 
 Use this quick smoke test to verify the implementation works in its current state:
 
 1. Open `.vscode/mcp.json` in VS Code.
 2. Use the **Start** or **Enable** action shown above the server definition so VS Code registers the `APS MCP Server` from this file.
-3. Open a **new GitHub Copilot Chat** window.
+3. Open a **new GitHub Copilot Chat** window, and make sure the mode picker at the bottom shows **Agent** (not Ask or Edits). Tools are only invoked in Agent mode.
 4. Ask a question such as:
 
     > What Forma projects do I have access to?
 
 If the server is running correctly, Copilot should call your MCP tool and respond with data from your APS account. If VS Code prompts you to approve the tool call, click **Allow**.
 
-> **Tip:** If something isn't working, `npx @modelcontextprotocol/inspector node index.js` lets you test the MCP server directly — useful when you're not sure whether the problem is in the server or the AI client.
+> **Debugging tip — MCP Inspector.** If something isn't working, the MCP Inspector lets you test the server directly, bypassing Copilot entirely:
+>
+> ```bash
+> npx @modelcontextprotocol/inspector node index.js
+> ```
+>
+> The command launches two things in your Codespace: the Inspector's proxy (which spawns your server over STDIO) and a web UI on port **6274**. Because it's running inside the Codespace, the web UI is **not** immediately available in your local browser — you need to forward the port first:
+>
+> 1. Open the **Ports** panel in VS Code (bottom panel → **Ports** tab, or **Terminal → New Terminal → Ports**).
+> 2. Look for port `6274`. VS Code usually detects it automatically and adds it to the list as soon as the Inspector starts.
+> 3. Hover over the **Forwarded Address** column and click the globe icon to open it in your browser.
+>
+> Once the UI is open, you can list and call tools, see the raw JSON-RPC traffic, and confirm whether a problem is in your server code or in the Copilot integration.
 
 ### Additional resources
 

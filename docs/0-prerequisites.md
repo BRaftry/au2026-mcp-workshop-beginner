@@ -17,7 +17,7 @@ You need an APS account and an application with its client ID and client secret.
 
 Your APS application needs to be granted access to an existing Forma hub. This tells APS which projects your app is allowed to access.
 
-1. Open [Autodesk Forma](https://acc.autodesk.com) and open a hub you own or administer.
+1. Open [Autodesk Forma](https://acc.autodesk.com), and open a hub you own or administer.
 2. Go to **Hub Admin → Custom Integrations**.
 3. Add your APS application by its **Client ID**.
 

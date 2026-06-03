@@ -16,6 +16,8 @@ Next, add your APS credentials:
 
 > Credentials are stored as GitHub Codespace secrets — they are injected as environment variables when a Codespace starts, so you never need to write them to a file.
 
+> **Add the secrets *before* you create your Codespace in Step 2.** Codespace secrets are only injected at start-up. If you create the Codespace first and add the secrets afterwards, you will need to stop and recreate the Codespace for them to take effect.
+
 1. From the repository page, click the **Settings** tab.
 2. In the left sidebar, expand **Secrets and variables** and click **Codespaces**.
 3. Click **New repository secret** and add the following two secrets:

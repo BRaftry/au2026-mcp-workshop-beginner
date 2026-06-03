@@ -91,7 +91,7 @@ export async function getHubsProjects(authenticationProvider) {
 }
 ```
 
-Notice that `DataManagementClient` receives `{ authenticationProvider }` — the SDK calls `getAccessToken` internally whenever it needs a token. You never see the raw token string outside of the provider class. `Promise.all` fetches all hubs' projects concurrently, and the destructuring assignment with default values keeps the code compact.
+Notice that `DataManagementClient` receives `{ authenticationProvider }` — the SDK calls `getAccessToken` internally whenever it needs a token. You never see the raw token string outside of the provider class. `Promise.all` fetches the projects for every hub concurrently, and the destructuring assignment with default values (`= []`) keeps the code compact when a hub has no projects.
 
 ## Step 3: List folder contents
 

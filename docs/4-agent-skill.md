@@ -99,6 +99,12 @@ Confirm your skill file is in the right place:
 
 4. Copilot will discover the skill, call `list-hubs-projects` to show your available projects, and then walk through the folder tree to produce a summary.
 
+> **Skill not detected?** Type `/` in the Copilot Chat input — registered skills appear in the suggestions list alongside built-in commands. If `/forma-weekly-update` isn't there, double-check the folder name (`.github/skills/forma-weekly-update/`) and the `name:` value in the frontmatter, then reload the VS Code window.
+
+### Where next?
+
+You've built a full MCP server, registered it with Copilot, and taught the agent a reusable skill. The [Extras](extras.md) page has open-ended ideas for vibe-coding new features, plus a production checklist for what you'd need to address before shipping a real MCP service.
+
 ### Additional resources
 
 - [GitHub Copilot documentation](https://docs.github.com/en/copilot)
