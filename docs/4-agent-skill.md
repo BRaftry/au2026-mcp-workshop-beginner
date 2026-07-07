@@ -8,6 +8,18 @@ In this section you'll create an **agent skill** — a Markdown prompt file that
 
 An agent skill is a plain Markdown file that describes *what* an AI agent should do — not *how* to do it. The agent figures out the how using its available tools (like the MCP server you built in the previous section). Skills are reusable, sharable, and version-controlled alongside your code.
 
+### Skills vs MCP tools
+
+Skills and MCP tools solve different problems. MCP gives an agent *access* — a live connection to a data source or API, like the Data Management tools you built in the previous section. A skill teaches the agent *how* to carry out a procedure using the tools it already has access to. Use both together: MCP for connectivity, skills for repeatable know-how.
+
+| | MCP tool | Agent skill |
+| --- | --- | --- |
+| Solves | Access to external systems and data | Procedural knowledge — how to do a task |
+| Example in this workshop | `list-hubs-projects`, `list-folder-contents` | `forma-weekly-update` |
+| Runs as | Code the agent calls | Instructions the agent reads and follows |
+
+Read more: [Skills, explained](https://claude.com/blog/skills-explained) on the Claude blog.
+
 ### Auto-discovery in GitHub Copilot
 
 GitHub Copilot in VS Code automatically discovers skill files placed at `.github/skills/<skill-name>/SKILL.md` in your repository. Once discovered, the skill name becomes a callable command — for example, `/forma-weekly-update` — that you can reference directly in Copilot Chat.
