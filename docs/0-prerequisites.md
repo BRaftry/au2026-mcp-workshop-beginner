@@ -6,12 +6,8 @@ Complete these steps **before the workshop**. They take roughly 20–30 minutes.
 
 You need an APS account and an application with its client ID and client secret.
 
-1. Go to [https://aps.autodesk.com](https://aps.autodesk.com) and sign in with your Autodesk account.
-2. Navigate to **My Apps** and click **Create Application**.
-3. Give it a name (e.g. `AU2026 Workshop`), select **Traditional Web App** as the app type.
-4. Copy the **Client ID** and **Client Secret** — you'll need these during the workshop.
-
-> **APS documentation:** [Get started with APS](https://aps.autodesk.com/en/docs/oauth/v2/tutorials/get-2-legged-token/)
+1. Follow the [Getting Started](https://get-started.aps.autodesk.com/) tutorial to create a Developer Hub and an application inside it. Creating a hub is required before you can create an application.
+2. Copy the **Client ID** and **Client Secret** — you'll need these during the workshop.
 
 ## Access to Forma
 
