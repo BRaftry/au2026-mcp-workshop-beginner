@@ -105,6 +105,7 @@ You should now have:
 The folder structure should look like this:
 
 ```text
+README.md
 node_modules/
 index.js
 package-lock.json
