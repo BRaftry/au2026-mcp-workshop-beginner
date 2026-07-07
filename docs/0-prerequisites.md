@@ -11,7 +11,7 @@ You need an APS account and an application with its client ID and client secret.
 3. Give it a name (e.g. `AU2026 Workshop`), select **Traditional Web App** as the app type.
 4. Copy the **Client ID** and **Client Secret** — you'll need these during the workshop.
 
-> **APS documentation:** [Get started with APS](https://aps.autodesk.com/en/docs/oauth/v2/tutorials/get-2-legged-token/)
+> **APS documentation:** [Get started with APS](https://get-started.aps.autodesk.com/)
 
 ## Access to Forma
 

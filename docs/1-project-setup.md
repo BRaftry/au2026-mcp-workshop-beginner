@@ -132,4 +132,4 @@ If you see `APS_CLIENT_ID: undefined`, the secrets were not picked up. The most 
 ### Additional resources
 
 - [GitHub Codespaces documentation](https://docs.github.com/en/codespaces)
-- [APS getting started guide](https://aps.autodesk.com/en/docs/oauth/v2/tutorials/get-2-legged-token/)
+- [APS getting started guide](https://get-started.aps.autodesk.com/)
