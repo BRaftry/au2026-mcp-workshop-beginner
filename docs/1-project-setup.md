@@ -27,7 +27,7 @@ Next, add your APS credentials:
 | `APS_CLIENT_ID` | Your APS application client ID |
 | `APS_CLIENT_SECRET` | Your APS application client secret |
 
-> **Where do I find these values?** They are on your application page at [https://aps.autodesk.com](https://aps.autodesk.com) → My Apps → your app.
+> **Where do I find these values?** They are on your application page at [https://aps.autodesk.com](https://aps.autodesk.com) → Developer Hubs → Applications → your app.
 
 ## Step 2: Codespace
 
