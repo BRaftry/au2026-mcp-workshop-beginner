@@ -27,7 +27,7 @@ Next, add your APS credentials:
 | `APS_CLIENT_ID` | Your APS application client ID |
 | `APS_CLIENT_SECRET` | Your APS application client secret |
 
-> **Where do I find these values?** They are on your application page at [https://aps.autodesk.com](https://aps.autodesk.com) → My Apps → your app.
+> **Where do I find these values?** They are on your application page at [https://aps.autodesk.com](https://aps.autodesk.com) → Developer Hubs → Applications → your app.
 
 ## Step 2: Codespace
 
@@ -105,6 +105,7 @@ You should now have:
 The folder structure should look like this:
 
 ```text
+README.md
 node_modules/
 index.js
 package-lock.json
@@ -132,4 +133,4 @@ If you see `APS_CLIENT_ID: undefined`, the secrets were not picked up. The most 
 ### Additional resources
 
 - [GitHub Codespaces documentation](https://docs.github.com/en/codespaces)
-- [APS getting started guide](https://aps.autodesk.com/en/docs/oauth/v2/tutorials/get-2-legged-token/)
+- [APS getting started guide](https://get-started.aps.autodesk.com/)
