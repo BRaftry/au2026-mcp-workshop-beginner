@@ -64,7 +64,7 @@ Create `package.json` in the project root with the following content:
   "dependencies": {
     "@aps_sdk/authentication": "^1.0.0",
     "@aps_sdk/data-management": "^1.1.0",
-    "@modelcontextprotocol/sdk": "^1.29.0",
+    "@modelcontextprotocol/server": "^2.0.0",
     "zod": "^4.4.0"
   }
 }

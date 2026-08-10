@@ -30,7 +30,7 @@ The **Model Context Protocol (MCP)** is an open standard that lets AI clients â€
 Create a new file called `mcp.js` in the project root. Start with the imports and a skeleton factory function:
 
 ```js
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { McpServer } from '@modelcontextprotocol/server';
 import { z } from 'zod';
 import { getHubsProjects, getFolderContents } from './aps.js';
 
@@ -103,7 +103,7 @@ This tool has a typed input schema defined with [Zod](https://zod.dev). The sche
 The `index.js` you created in the previous section was a temporary sanity check. Replace its entire contents with the real entry point:
 
 ```js
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { StdioServerTransport } from '@modelcontextprotocol/server/stdio';
 import { AppAuthenticationProvider } from './aps.js';
 import { createMcpServer } from './mcp.js';
 
@@ -162,7 +162,7 @@ You should now have:
     </summary>
 
 ```js
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { McpServer } from '@modelcontextprotocol/server';
 import { z } from 'zod';
 import { getHubsProjects, getFolderContents } from './aps.js';
 
@@ -212,7 +212,7 @@ export function createMcpServer(authenticationProvider) {
     </summary>
 
 ```js
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { StdioServerTransport } from '@modelcontextprotocol/server/stdio';
 import { AppAuthenticationProvider } from './aps.js';
 import { createMcpServer } from './mcp.js';
 
