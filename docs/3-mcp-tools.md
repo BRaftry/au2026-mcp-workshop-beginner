@@ -112,7 +112,7 @@ if (!APS_CLIENT_ID || !APS_CLIENT_SECRET) {
     console.error('APS_CLIENT_ID and APS_CLIENT_SECRET environment variables are required.');
     process.exit(1);
 }
-console.log('APS_CLIENT_ID:', APS_CLIENT_ID);
+console.error('APS_CLIENT_ID:', APS_CLIENT_ID);
 
 const authenticationProvider = new AppAuthenticationProvider(APS_CLIENT_ID, APS_CLIENT_SECRET);
 const server = createMcpServer(authenticationProvider);
@@ -125,6 +125,7 @@ What each part does:
 - `StdioServerTransport` wires the server to stdin/stdout
 - `AppAuthenticationProvider` is passed into the factory so the server can make authenticated APS calls
 - `server.connect(transport)` starts the MCP message loop — the process now waits for tool calls from a client
+- the client ID is echoed with `console.error`, not `console.log` — under STDIO, stdout carries the JSON-RPC messages, so anything you print there corrupts the protocol stream
 
 ## Step 4: Copilot integration
 
@@ -221,7 +222,7 @@ if (!APS_CLIENT_ID || !APS_CLIENT_SECRET) {
     console.error('APS_CLIENT_ID and APS_CLIENT_SECRET environment variables are required.');
     process.exit(1);
 }
-console.log('APS_CLIENT_ID:', APS_CLIENT_ID);
+console.error('APS_CLIENT_ID:', APS_CLIENT_ID);
 
 const authenticationProvider = new AppAuthenticationProvider(APS_CLIENT_ID, APS_CLIENT_SECRET);
 const server = createMcpServer(authenticationProvider);
