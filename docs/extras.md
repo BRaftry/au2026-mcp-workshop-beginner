@@ -24,7 +24,7 @@ Vibe coding works best when the prompt names the file you want changed, the shap
 
 - **Search project by name** (extend an existing tool):
 
-  > In `mcp.js`, add an optional `nameFilter` string parameter to the `list-projects` tool. When provided, only return projects whose `attributes.name` contains the filter (case-insensitive). Keep the existing behaviour when it's omitted, and update the tool description so Copilot Chat knows when to pass the filter.
+  > In `mcp.js`, add an optional `nameFilter` string parameter to the `list-hubs-projects` tool. When provided, only return projects whose `attributes.name` contains the filter (case-insensitive). Keep the existing behaviour when it's omitted, and update the tool description so Copilot Chat knows when to pass the filter.
 
 - **List issues** (new tool against a new API):
 
@@ -58,4 +58,4 @@ You've built a working MCP server. Here's what you'd need to address before ship
 | Error handling | Minimal | Structured error responses, logging, and alerting |
 | MCP client access | Anyone with the binary | Restrict to authorised users; consider authentication at the client layer |
 
-> **Next step:** Watch the advanced session, where Streamable HTTP transport, user authentication, and an embedded design viewer get added next.
+> **Next step:** Watch the advanced session, where Streamable HTTP transport, 3-legged user authentication, an embedded design viewer, and an OAuth proxy that makes clients sign in all get added on top of what you've built.

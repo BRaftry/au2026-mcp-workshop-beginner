@@ -31,7 +31,7 @@ npm install
 
 ## VS Code integration
 
-`.vscode/mcp.json` registers the server as **APS MCP Server** using the STDIO transport. To use the server from Copilot, you must provide `APS_CLIENT_ID` and `APS_CLIENT_SECRET` to that MCP process, typically by specifying them in a `.env` file and pointing the MCP server to it with the `envFile` field in `.vscode/mcp.json`. Once those variables are available, open the repo in VS Code (or a GitHub Codespace) and the server will be available to Copilot.
+`.vscode/mcp.json` registers the server as **APS MCP Server** using the STDIO transport. VS Code launches `node index.js` as a child process, so `APS_CLIENT_ID` and `APS_CLIENT_SECRET` have to be present in that process's environment. In a GitHub Codespace they already are — the workshop stores them as Codespace secrets. Running locally, export them in your shell before launching VS Code, or add an `envFile` entry to `.vscode/mcp.json` pointing at a gitignored `.env`.
 
 ## Architecture
 
