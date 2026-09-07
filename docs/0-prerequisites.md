@@ -4,10 +4,16 @@ Complete these steps **before the workshop**. They take roughly 20–30 minutes.
 
 ## Autodesk Platform Services
 
-You need an APS account and an application with its client ID and client secret.
+If this is the first time you're working with APS, create a new account and a developer hub:
 
-1. Follow the [Getting Started](https://get-started.aps.autodesk.com/) tutorial to create a Developer Hub and an application inside it. Creating a hub is required before you can create an application.
-2. Copy the **Client ID** and **Client Secret** — you'll need these during the workshop.
+- [Create an account](https://get-started.aps.autodesk.com/#create-an-account)
+- [Create a developer hub](https://get-started.aps.autodesk.com/#create-a-developer-hub)
+
+Then, create a new **Traditional Web App** application:
+
+- [Create app credentials](https://get-started.aps.autodesk.com/#create-app-credentials)
+
+Copy the **Client ID** and **Client Secret** — you'll need both during the workshop. Leave the **Callback URL** as it is. This session doesn't use it.
 
 ## Access to Forma
 
