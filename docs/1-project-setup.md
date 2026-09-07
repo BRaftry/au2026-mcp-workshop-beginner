@@ -84,7 +84,23 @@ added 42 packages, and audited 43 packages in 5s
 
 The exact numbers will vary. As long as there are no errors, you're good.
 
-## Step 4: Simple app
+## Step 4: Ignore local files
+
+`npm install` just created a `node_modules/` folder with hundreds of files in it. None of that belongs in your repository.
+
+Create `.gitignore` in the project root with the following content:
+
+```text
+node_modules/
+.env
+*.log
+.DS_Store
+.claude
+```
+
+This keeps installed dependencies, local environment files, logs, and editor scratch directories out of version control. Your APS credentials live in Codespace secrets rather than in a file, so there is nothing sensitive to commit.
+
+## Step 5: Simple app
 
 The code in this file is just a quick sanity check — it will be replaced later.
 
@@ -101,13 +117,15 @@ You should now have:
 - [x] A public GitHub repository named `au2026-mcp-workshop-beginner`
 - [x] `APS_CLIENT_ID` and `APS_CLIENT_SECRET` configured as Codespace secrets
 - [x] A running Codespace with dependencies installed
+- [x] A `.gitignore` keeping `node_modules/` out of version control
 
 The folder structure should look like this:
 
 ```text
+.gitignore
 README.md
-node_modules/
 index.js
+node_modules/
 package-lock.json
 package.json
 ```

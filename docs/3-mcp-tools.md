@@ -59,7 +59,9 @@ Replace the first `// TODO` comment with the following tool registration:
     server.registerTool(
         'list-hubs-projects',
         {
+            title: 'List hubs and projects',
             description: 'Lists all hubs and their projects available to the APS application.',
+            annotations: { readOnlyHint: true }
         },
         async () => {
             const hubs = await getHubsProjects(authenticationProvider);
@@ -71,8 +73,19 @@ Replace the first `// TODO` comment with the following tool registration:
 `server.registerTool` takes three arguments:
 
 1. **Name** — the identifier the AI uses to call this tool
-2. **Options object** — contains at minimum a `description` (plain-language explanation the AI uses to decide when to call the tool); tools with inputs also include an `inputSchema`
+2. **Options object** — describes the tool to the client
 3. **Handler** — an async function that does the work and returns `{ content: [...] }`
+
+The options object carries four things worth knowing about:
+
+| Field | Purpose |
+| --- | --- |
+| `description` | Plain-language explanation the AI uses to decide when to call the tool |
+| `title` | Human-readable name clients show in their UI |
+| `inputSchema` | The tool's typed arguments; omit it for a tool that takes none |
+| `annotations` | Hints about what calling the tool does |
+
+`annotations: { readOnlyHint: true }` declares that the tool only reads data and never changes anything. Both of your tools are read-only, and saying so lets a client treat them as safe — in practice that means Copilot stops asking you to approve every single call, which matters once you start iterating.
 
 Replace the second `// TODO` comment with:
 
@@ -80,12 +93,14 @@ Replace the second `// TODO` comment with:
     server.registerTool(
         'list-folder-contents',
         {
+            title: 'List folder contents',
             description: 'Lists the contents of a folder in a project, or top-level folders if no folder ID is provided.',
             inputSchema: z.object({
                 hubId: z.string().describe('Hub ID.'),
                 projectId: z.string().describe('Project ID.'),
                 folderId: z.string().optional().describe('Folder ID. Omit to list top-level folders.'),
-            })
+            }),
+            annotations: { readOnlyHint: true }
         },
         async ({ hubId, projectId, folderId }) => {
             const items = await getFolderContents(hubId, projectId, folderId, authenticationProvider);
@@ -177,7 +192,9 @@ export function createMcpServer(authenticationProvider) {
     server.registerTool(
         'list-hubs-projects',
         {
+            title: 'List hubs and projects',
             description: 'Lists all hubs and their projects available to the APS application.',
+            annotations: { readOnlyHint: true }
         },
         async () => {
             const hubs = await getHubsProjects(authenticationProvider);
@@ -188,12 +205,14 @@ export function createMcpServer(authenticationProvider) {
     server.registerTool(
         'list-folder-contents',
         {
+            title: 'List folder contents',
             description: 'Lists the contents of a folder in a project, or top-level folders if no folder ID is provided.',
             inputSchema: z.object({
                 hubId: z.string().describe('Hub ID.'),
                 projectId: z.string().describe('Project ID.'),
                 folderId: z.string().optional().describe('Folder ID. Omit to list top-level folders.'),
-            })
+            }),
+            annotations: { readOnlyHint: true }
         },
         async ({ hubId, projectId, folderId }) => {
             const items = await getFolderContents(hubId, projectId, folderId, authenticationProvider);
@@ -245,19 +264,28 @@ Use this quick smoke test to verify the implementation works in its current stat
 
 If the server is running correctly, Copilot should call your MCP tool and respond with data from your APS account. If VS Code prompts you to approve the tool call, click **Allow**.
 
-> **Debugging tip — MCP Inspector.** If something isn't working, the MCP Inspector lets you test the server directly, bypassing Copilot entirely:
+> **Debugging tip — MCP Inspector.** If something isn't working, the MCP Inspector lets you test the server directly, bypassing Copilot entirely. Its command-line mode is the quickest option in a Codespace — no ports to forward and no browser needed.
+>
+> List the tools your server exposes:
 >
 > ```bash
-> npx @modelcontextprotocol/inspector node index.js
+> npx @modelcontextprotocol/inspector --cli node index.js -e APS_CLIENT_ID=$APS_CLIENT_ID -e APS_CLIENT_SECRET=$APS_CLIENT_SECRET --method tools/list
 > ```
 >
-> The command launches two things in your Codespace: the Inspector's proxy (which spawns your server over STDIO) and a web UI on port **6274**. Because it's running inside the Codespace, the web UI is **not** immediately available in your local browser — you need to forward the port first:
+> Call one of them:
 >
-> 1. Open the **Ports** panel in VS Code (bottom panel → **Ports** tab, or **Terminal → New Terminal → Ports**).
-> 2. Look for port `6274`. VS Code usually detects it automatically and adds it to the list as soon as the Inspector starts.
-> 3. Hover over the **Forwarded Address** column and click the globe icon to open it in your browser.
+> ```bash
+> npx @modelcontextprotocol/inspector --cli node index.js -e APS_CLIENT_ID=$APS_CLIENT_ID -e APS_CLIENT_SECRET=$APS_CLIENT_SECRET --method tools/call --tool-name list-hubs-projects
+> ```
 >
-> Once the UI is open, you can list and call tools, see the raw JSON-RPC traffic, and confirm whether a problem is in your server code or in the Copilot integration.
+> The Inspector spawns your server as a child process and prints the raw JSON result, so you can confirm whether a problem is in your server code or in the Copilot integration.
+>
+> Two things to watch for:
+>
+> - **The Inspector does not pass your environment through to the server.** That's what the `-e` flags are for. Without them your server exits with `APS_CLIENT_ID and APS_CLIENT_SECRET environment variables are required.` and the Inspector reports `Connection closed`.
+> - **The Inspector needs Node 22.19 or newer**, which is a higher bar than the server itself. Check with `node --version` if `npx` refuses to run it.
+>
+> There is also a browser UI (`npx @modelcontextprotocol/inspector node index.js`, plus the same `-e` flags). It serves on port **6274** and prints a URL containing a one-time session token — you have to open that full URL, token included, or the UI loads but every request it makes is rejected.
 
 ### Additional resources
 
