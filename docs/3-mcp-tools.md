@@ -127,7 +127,6 @@ if (!APS_CLIENT_ID || !APS_CLIENT_SECRET) {
     console.error('APS_CLIENT_ID and APS_CLIENT_SECRET environment variables are required.');
     process.exit(1);
 }
-console.error('APS_CLIENT_ID:', APS_CLIENT_ID);
 
 const authenticationProvider = new AppAuthenticationProvider(APS_CLIENT_ID, APS_CLIENT_SECRET);
 const server = createMcpServer(authenticationProvider);
@@ -140,7 +139,9 @@ What each part does:
 - `StdioServerTransport` wires the server to stdin/stdout
 - `AppAuthenticationProvider` is passed into the factory so the server can make authenticated APS calls
 - `server.connect(transport)` starts the MCP message loop — the process now waits for tool calls from a client
-- the client ID is echoed with `console.error`, not `console.log` — under STDIO, stdout carries the JSON-RPC messages, so anything you print there corrupts the protocol stream
+- the `APS_CLIENT_ID:` line from the previous section is gone — it was there to prove the secrets had arrived, and that job is done
+
+> **Why `console.error` and not `console.log`?** The missing-credentials message uses `console.error` on purpose. Under STDIO, stdout is the protocol channel: the client reads JSON-RPC messages from it, so anything else you write there corrupts the stream and the connection drops. Diagnostics have to go to stderr, which the client treats as a log. The rule holds for every message your server prints, so reach for `console.error` throughout this session — never `console.log`.
 
 ## Step 4: Copilot integration
 
@@ -241,7 +242,6 @@ if (!APS_CLIENT_ID || !APS_CLIENT_SECRET) {
     console.error('APS_CLIENT_ID and APS_CLIENT_SECRET environment variables are required.');
     process.exit(1);
 }
-console.error('APS_CLIENT_ID:', APS_CLIENT_ID);
 
 const authenticationProvider = new AppAuthenticationProvider(APS_CLIENT_ID, APS_CLIENT_SECRET);
 const server = createMcpServer(authenticationProvider);
