@@ -8,9 +8,11 @@ Create a new GitHub repository:
 
 1. Go to [github.com/new](https://github.com/new).
 2. Set the repository name to `au2026-mcp-workshop-beginner`.
-3. Set visibility to **Public**.
+3. Set visibility to **Private**.
 4. Check **Add a README file** so the repository is initialised and has a default branch.
 5. Click **Create repository**.
+
+> Codespaces works the same way on a private repository, so nothing in this workshop needs the code to be public.
 
 Next, add your APS credentials:
 
@@ -114,7 +116,7 @@ console.log('APS_CLIENT_ID:', process.env.APS_CLIENT_ID);
 
 You should now have:
 
-- [x] A public GitHub repository named `au2026-mcp-workshop-beginner`
+- [x] A private GitHub repository named `au2026-mcp-workshop-beginner`
 - [x] `APS_CLIENT_ID` and `APS_CLIENT_SECRET` configured as Codespace secrets
 - [x] A running Codespace with dependencies installed
 - [x] A `.gitignore` keeping `node_modules/` out of version control
