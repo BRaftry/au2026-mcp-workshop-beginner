@@ -104,15 +104,19 @@ export async function getFolderContents(hubId, projectId, folderId, authenticati
     const { data: items = [] } = folderId
         ? await client.getFolderContents(projectId, folderId)
         : await client.getProjectTopFolders(hubId, projectId);
-    return items.map(item => ({
-        type: item.type,
-        id: item.id,
-        name: item.attributes.displayName,
-        modifiedAt: item.attributes.lastModifiedTime,
-        modifiedBy: item.attributes.lastModifiedUserName
-    }));
+    return items
+        .filter(item => !item.attributes.hidden) // skip entries the Forma UI hides, e.g. system folders
+        .map(item => ({
+            type: item.type,
+            id: item.id,
+            name: item.attributes.displayName,
+            modifiedAt: item.attributes.lastModifiedTime,
+            modifiedBy: item.attributes.lastModifiedUserName
+        }));
 }
 ```
+
+Projects contain entries the Forma UI keeps out of sight, such as system folders. The API flags them with a `hidden` attribute, and the helper filters them out before mapping. Without that filter the AI would report folders you cannot find anywhere in Forma.
 
 ## Step 4: Update the app
 
@@ -195,13 +199,15 @@ export async function getFolderContents(hubId, projectId, folderId, authenticati
     const { data: items = [] } = folderId
         ? await client.getFolderContents(projectId, folderId)
         : await client.getProjectTopFolders(hubId, projectId);
-    return items.map(item => ({
-        type: item.type,
-        id: item.id,
-        name: item.attributes.displayName,
-        modifiedAt: item.attributes.lastModifiedTime,
-        modifiedBy: item.attributes.lastModifiedUserName
-    }));
+    return items
+        .filter(item => !item.attributes.hidden) // skip entries the Forma UI hides, e.g. system folders
+        .map(item => ({
+            type: item.type,
+            id: item.id,
+            name: item.attributes.displayName,
+            modifiedAt: item.attributes.lastModifiedTime,
+            modifiedBy: item.attributes.lastModifiedUserName
+        }));
 }
 ```
 
