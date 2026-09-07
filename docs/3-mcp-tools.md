@@ -103,7 +103,7 @@ Replace the second `// TODO` comment with:
             annotations: { readOnlyHint: true }
         },
         async ({ hubId, projectId, folderId }) => {
-            const items = await getFolderContents(hubId, projectId, folderId, authenticationProvider);
+            const items = await getFolderContents(authenticationProvider, hubId, projectId, folderId);
             return { content: [{ type: 'text', text: JSON.stringify(items, null, 2) }] };
         }
     );
@@ -112,6 +112,8 @@ Replace the second `// TODO` comment with:
 This tool has a typed input schema defined with [Zod](https://zod.dev). The schema is passed as `inputSchema` inside the options object, wrapped in `z.object({...})`. The `.describe()` calls on each field tell the AI what to pass — the AI reads these descriptions to fill in arguments automatically from context.
 
 `folderId` is marked `.optional()`, which lets the AI omit it when it wants top-level folders rather than the contents of a specific folder.
+
+`hubId` is required even though the helper only reads it on one of its two paths. The APS API addresses a project's top-level folders per hub, and the contents of a specific folder per project — so the tool asks for both identifiers up front and ignores `hubId` when `folderId` is supplied.
 
 ## Step 3: Update the app
 
@@ -163,7 +165,7 @@ VS Code reads this file and, when you open Copilot Chat in agent mode, it automa
 
 > **After editing `mcp.js`, `aps.js`, or `index.js`:** click the **Restart** action above the server definition in `mcp.json` (or stop and start it again). Copilot keeps using the previously-loaded build of the server until you restart it, which is the most common source of "my change didn't take effect" confusion.
 
-> **Note:** The `APS_CLIENT_ID` and `APS_CLIENT_SECRET` environment variables are injected by your Codespace secrets — you don't need to add them here.
+> **Note:** The `APS_CLIENT_ID` and `APS_CLIENT_SECRET` environment variables are injected by your Codespace secrets — you don't need to add them here. That holds whether you use the Codespace in the browser or through local VS Code, because the server always runs inside the Codespace. If you ever run the project outside a Codespace, export the two variables in your shell before launching VS Code.
 
 ## Checkpoint
 
@@ -216,7 +218,7 @@ export function createMcpServer(authenticationProvider) {
             annotations: { readOnlyHint: true }
         },
         async ({ hubId, projectId, folderId }) => {
-            const items = await getFolderContents(hubId, projectId, folderId, authenticationProvider);
+            const items = await getFolderContents(authenticationProvider, hubId, projectId, folderId);
             return { content: [{ type: 'text', text: JSON.stringify(items, null, 2) }] };
         }
     );

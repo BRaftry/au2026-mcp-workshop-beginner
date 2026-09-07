@@ -35,7 +35,7 @@ export function createMcpServer(authenticationProvider) {
             annotations: { readOnlyHint: true }
         },
         async ({ hubId, projectId, folderId }) => {
-            const items = await getFolderContents(hubId, projectId, folderId, authenticationProvider);
+            const items = await getFolderContents(authenticationProvider, hubId, projectId, folderId);
             return { content: [{ type: 'text', text: JSON.stringify(items, null, 2) }] };
         }
     );

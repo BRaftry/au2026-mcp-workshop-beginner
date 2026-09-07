@@ -98,7 +98,7 @@ Notice that `DataManagementClient` receives `{ authenticationProvider }` — the
 This helper returns the contents of a folder, or — when no `folderId` is given — the top-level folders of a project. It is not used in this section, but it will be needed when you build the MCP server later. Add it in the `aps.js` file after the `getHubsProjects` function:
 
 ```js
-export async function getFolderContents(hubId, projectId, folderId, authenticationProvider) {
+export async function getFolderContents(authenticationProvider, hubId, projectId, folderId) {
     const client = new DataManagementClient({ authenticationProvider });
     // TODO: only the first page of results is returned; folders with more than 200 children need pagination via links.next
     const { data: items = [] } = folderId
@@ -193,7 +193,7 @@ export async function getHubsProjects(authenticationProvider) {
     }));
 }
 
-export async function getFolderContents(hubId, projectId, folderId, authenticationProvider) {
+export async function getFolderContents(authenticationProvider, hubId, projectId, folderId) {
     const client = new DataManagementClient({ authenticationProvider });
     // TODO: only the first page of results is returned; folders with more than 200 children need pagination via links.next
     const { data: items = [] } = folderId
@@ -239,6 +239,8 @@ If your APS credentials are valid and your application has been provisioned to a
 The actual IDs, hub names, and project names will be specific to your account.
 
 **If you see an empty array (`[]`):** your application has not been added to any hub yet. In Forma, an administrator must add the application under Hub Admin → Custom Integrations.
+
+**If you see `AUTH-001 — The client_id specified does not have access to the api product`:** this is the most common first-run failure. The wording points at your credentials, but the cause is the one described above — the application has not been provisioned. Add it to a Forma hub as described in the [prerequisites](0-prerequisites.md), then try again.
 
 **If you see an authentication error:** double-check that `APS_CLIENT_ID` and `APS_CLIENT_SECRET` are set correctly.
 
