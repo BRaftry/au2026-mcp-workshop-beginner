@@ -37,7 +37,7 @@ import { getHubsProjects, getFolderContents } from './aps.js';
 export function createMcpServer(authenticationProvider) {
     const server = new McpServer({
         name: 'aps-mcp-server',
-        description: 'MCP server for Autodesk Platform Services',
+        title: 'APS MCP Server',
         version: '1.0.0'
     });
 
@@ -49,7 +49,7 @@ export function createMcpServer(authenticationProvider) {
 }
 ```
 
-`McpServer` is the main class from the MCP SDK. You give it a name and version, then register tools on it before returning it.
+`McpServer` is the main class from the MCP SDK. You give it a name, a display title, and a version, then register tools on it before returning it. The `name` is the machine-readable identifier; the `title` is what MCP clients show to the user.
 
 ## Step 2: MCP tools
 
@@ -186,7 +186,7 @@ import { getHubsProjects, getFolderContents } from './aps.js';
 export function createMcpServer(authenticationProvider) {
     const server = new McpServer({
         name: 'aps-mcp-server',
-        description: 'MCP server for Autodesk Platform Services',
+        title: 'APS MCP Server',
         version: '1.0.0'
     });
 
