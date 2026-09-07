@@ -15,7 +15,7 @@ export class AppAuthenticationProvider {
     }
 
     async getAccessToken() {
-        if (this.cache.expiresAt < Date.now()) {
+        if (this.cache.expiresAt < Date.now() + 60 * 1000) { // refresh a minute early to absorb clock skew and request latency
             const credentials = await this.authClient.getTwoLeggedToken(this.clientId, this.clientSecret, SCOPES);
             this.cache.accessToken = credentials.access_token;
             this.cache.expiresAt = Date.now() + credentials.expires_in * 1000;

@@ -55,7 +55,7 @@ export class AppAuthenticationProvider {
     }
 
     async getAccessToken() {
-        if (this.cache.expiresAt < Date.now()) {
+        if (this.cache.expiresAt < Date.now() + 60 * 1000) { // refresh a minute early to absorb clock skew and request latency
             const credentials = await this.authClient.getTwoLeggedToken(this.clientId, this.clientSecret, SCOPES);
             this.cache.accessToken = credentials.access_token;
             this.cache.expiresAt = Date.now() + credentials.expires_in * 1000;
@@ -68,7 +68,7 @@ export class AppAuthenticationProvider {
 A few things worth noting:
 
 - `SCOPES` is defined once at the module level as `[Scopes.DataRead]`. Centralising it means you only need to change it in one place if you later need additional scopes.
-- `cache` is a plain object with `accessToken` and `expiresAt`. A fresh token is fetched whenever `expiresAt` is in the past (i.e. 0 on first call, or after the token has expired).
+- `cache` is a plain object with `accessToken` and `expiresAt`. A fresh token is fetched whenever `expiresAt` is less than a minute away (i.e. 0 on first call, or once the token is close to expiring). That one-minute margin matters: a token is valid for an hour, and handing out one with a second left on it means the request can reach APS after it has expired, which shows up as a sporadic `401` that looks random. Refreshing early keeps that out of the picture.
 - `getAccessToken()` takes no arguments — the scopes are fixed by the module-level constant, which is intentional for a 2-legged server-to-server integration.
 
 ## Step 2: List hubs & projects
@@ -165,7 +165,7 @@ export class AppAuthenticationProvider {
     }
 
     async getAccessToken() {
-        if (this.cache.expiresAt < Date.now()) {
+        if (this.cache.expiresAt < Date.now() + 60 * 1000) { // refresh a minute early to absorb clock skew and request latency
             const credentials = await this.authClient.getTwoLeggedToken(this.clientId, this.clientSecret, SCOPES);
             this.cache.accessToken = credentials.access_token;
             this.cache.expiresAt = Date.now() + credentials.expires_in * 1000;
