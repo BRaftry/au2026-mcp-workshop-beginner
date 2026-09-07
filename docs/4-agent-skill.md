@@ -99,7 +99,7 @@ Confirm your skill file is in the right place:
         └── SKILL.md
 ```
 
-### Try it out
+## Try it out
 
 1. Open the **Copilot Chat** panel in VS Code (`Ctrl+Shift+I` / `Cmd+Shift+I`).
 2. Make sure your MCP server is configured and running (see [Part 3](3-mcp-tools.md)).
@@ -113,11 +113,11 @@ Confirm your skill file is in the right place:
 
 > **Skill not detected?** Type `/` in the Copilot Chat input — registered skills appear in the suggestions list alongside built-in commands. If `/forma-weekly-update` isn't there, double-check the folder name (`.github/skills/forma-weekly-update/`) and the `name:` value in the frontmatter, then reload the VS Code window.
 
-### Where next?
+## Where next?
 
 You've built a full MCP server, registered it with Copilot, and taught the agent a reusable skill. The [Extras](extras.md) page has open-ended ideas for vibe-coding new features, plus a production checklist for what you'd need to address before shipping a real MCP service.
 
-### Additional resources
+## Additional resources
 
 - [GitHub Copilot documentation](https://docs.github.com/en/copilot)
 - [MCP documentation](https://modelcontextprotocol.io)

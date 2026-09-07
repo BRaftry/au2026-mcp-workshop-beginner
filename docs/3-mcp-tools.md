@@ -251,7 +251,7 @@ await server.connect(transport);
 
 </details>
 
-### Try it out
+## Try it out
 
 Use this quick smoke test to verify the implementation works in its current state:
 
@@ -287,7 +287,7 @@ If the server is running correctly, Copilot should call your MCP tool and respon
 >
 > There is also a browser UI (`npx @modelcontextprotocol/inspector node index.js`, plus the same `-e` flags). It serves on port **6274** and prints a URL containing a one-time session token — you have to open that full URL, token included, or the UI loads but every request it makes is rejected.
 
-### Additional resources
+## Additional resources
 
 - [Model Context Protocol documentation](https://modelcontextprotocol.io)
 - [MCP SDK for JavaScript](https://github.com/modelcontextprotocol/typescript-sdk)

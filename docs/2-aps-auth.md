@@ -207,7 +207,7 @@ export async function getFolderContents(hubId, projectId, folderId, authenticati
 
 </details>
 
-### Try it out
+## Try it out
 
 Run the `index.js` script in the terminal:
 
@@ -236,7 +236,7 @@ The actual IDs, hub names, and project names will be specific to your account.
 
 **If you see an authentication error:** double-check that `APS_CLIENT_ID` and `APS_CLIENT_SECRET` are set correctly.
 
-### Additional resources
+## Additional resources
 
 - [APS Data Management API overview](https://aps.autodesk.com/en/docs/data/v2/overview/)
 - [APS SDK for Node.js](https://github.com/autodesk-platform-services/aps-sdk-node)

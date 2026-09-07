@@ -130,7 +130,7 @@ package-lock.json
 package.json
 ```
 
-### Try it out
+## Try it out
 
 Run the `index.js` script in the terminal:
 
@@ -148,7 +148,7 @@ APS_CLIENT_ID: <your-client-id>
 
 If you see `APS_CLIENT_ID: undefined`, the secrets were not picked up. The most common cause is that the Codespace was created *before* the secrets were added. Stop the Codespace and create a new one — secrets are only injected at start-up.
 
-### Additional resources
+## Additional resources
 
 - [GitHub Codespaces documentation](https://docs.github.com/en/codespaces)
 - [APS getting started guide](https://get-started.aps.autodesk.com/)
