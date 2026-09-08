@@ -1,6 +1,6 @@
 # Part 1: Project Setup
 
-In this section you'll create a GitHub repository, launch a Codespace, store your APS credentials as secrets, and verify they're available to your code — everything you need before writing a single line of business logic.
+In this section you'll create a GitHub repository, launch a Codespace, and store your APS credentials as secrets. By the end you'll have verified they're available to your code — everything you need before writing a single line of business logic.
 
 ## Step 1: Repository
 
@@ -8,11 +8,9 @@ Create a new GitHub repository:
 
 1. Go to [github.com/new](https://github.com/new).
 2. Set the repository name to `au2026-mcp-workshop-beginner`.
-3. Set visibility to **Private**.
+3. Keep the visibility set to **Private**.
 4. Check **Add a README file** so the repository is initialised and has a default branch.
 5. Click **Create repository**.
-
-> Codespaces works the same way on a private repository, so nothing in this workshop needs the code to be public.
 
 Next, add your APS credentials:
 
@@ -42,13 +40,11 @@ Start a new GitHub Codespace:
 
 GitHub will build and launch a cloud development environment with Node.js pre-installed. This takes about a minute the first time.
 
-You can work directly in the browser, but opening the Codespace in your local VS Code gives you a better experience with GitHub Copilot.
+In this workshop we will be using VS Code in the browser but you can also use VS Code desktop:
 
 1. In the Codespace browser tab, click the **...** menu (top-left or bottom-left status bar).
 2. Select **Open in Visual Studio Code**.
 3. VS Code will install the GitHub Codespaces extension if needed and reconnect to your Codespace.
-
-> **Browser is fine too.** If you prefer to stay in the browser, skip this step — everything works the same way.
 
 ## Step 3: Dependencies
 
@@ -104,7 +100,7 @@ This keeps installed dependencies, local environment files, logs, and editor scr
 
 ## Step 5: Simple app
 
-The code in this file is just a quick sanity check — it will be replaced later.
+The code in this file is a quick sanity check — it will be replaced later.
 
 Create `index.js` in the project root with the following content:
 

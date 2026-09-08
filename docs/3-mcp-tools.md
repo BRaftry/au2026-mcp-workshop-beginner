@@ -49,7 +49,7 @@ export function createMcpServer(authenticationProvider) {
 }
 ```
 
-`McpServer` is the main class from the MCP SDK. You give it a name, a display title, and a version, then register tools on it before returning it. The `name` is the machine-readable identifier; the `title` is what MCP clients show to the user.
+`McpServer` is the main class from the MCP SDK. You give it a name, a display title, and a version. Then you register tools on it before returning it. The `name` is the machine-readable identifier; the `title` is what MCP clients show to the user.
 
 ## Step 2: MCP tools
 
@@ -85,7 +85,7 @@ The options object carries four things worth knowing about:
 | `inputSchema` | The tool's typed arguments; omit it for a tool that takes none |
 | `annotations` | Hints about what calling the tool does |
 
-`annotations: { readOnlyHint: true }` declares that the tool only reads data and never changes anything. Both of your tools are read-only, and saying so lets a client treat them as safe — in practice that means Copilot stops asking you to approve every single call, which matters once you start iterating.
+`annotations: { readOnlyHint: true }` tells the client the tool only reads data and never changes anything. Both of your tools are read-only. Declaring it lets Copilot treat them as safe, skipping the per-call approval prompt.
 
 Replace the second `// TODO` comment with:
 
@@ -109,11 +109,11 @@ Replace the second `// TODO` comment with:
     );
 ```
 
-This tool has a typed input schema defined with [Zod](https://zod.dev). The schema is passed as `inputSchema` inside the options object, wrapped in `z.object({...})`. The `.describe()` calls on each field tell the AI what to pass — the AI reads these descriptions to fill in arguments automatically from context.
+This tool has a typed input schema defined with [Zod](https://zod.dev). The schema is passed as `inputSchema` inside the options object, wrapped in `z.object({...})`. The `.describe()` calls on each field tell the AI what to pass, so it can fill in arguments automatically from context.
 
 `folderId` is marked `.optional()`, which lets the AI omit it when it wants top-level folders rather than the contents of a specific folder.
 
-`hubId` is required even though the helper only reads it on one of its two paths. The APS API addresses a project's top-level folders per hub, and the contents of a specific folder per project — so the tool asks for both identifiers up front and ignores `hubId` when `folderId` is supplied.
+`hubId` is required even though the helper only reads it on one of its two paths. The APS API addresses a project's top-level folders per hub. It addresses the contents of a specific folder per project instead. The tool asks for both identifiers up front, and ignores `hubId` whenever `folderId` is supplied.
 
 ## Step 3: Update the app
 
@@ -143,7 +143,7 @@ What each part does:
 - `server.connect(transport)` starts the MCP message loop — the process now waits for tool calls from a client
 - the `APS_CLIENT_ID:` line from the previous section is gone — it was there to prove the secrets had arrived, and that job is done
 
-> **Why `console.error` and not `console.log`?** The missing-credentials message uses `console.error` on purpose. Under STDIO, stdout is the protocol channel: the client reads JSON-RPC messages from it, so anything else you write there corrupts the stream and the connection drops. Diagnostics have to go to stderr, which the client treats as a log. The rule holds for every message your server prints, so reach for `console.error` throughout this session — never `console.log`.
+> **Design note:** Under STDIO, stdout is the protocol channel: the client reads JSON-RPC messages from it, so anything else written there corrupts the stream and drops the connection. Diagnostics go to stderr instead, which the client treats as a log. Use `console.error` for every message your server prints — never `console.log`.
 
 ## Step 4: Copilot integration
 

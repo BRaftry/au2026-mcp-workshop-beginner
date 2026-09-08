@@ -115,7 +115,7 @@ Confirm your skill file is in the right place:
 
 ## Where next?
 
-You've built a full MCP server, registered it with Copilot, and taught the agent a reusable skill. The [Extras](extras.md) page has open-ended ideas for vibe-coding new features, plus a production checklist for what you'd need to address before shipping a real MCP service.
+You've built a full MCP server and registered it with Copilot. You've also taught the agent a reusable skill. The [Extras](extras.md) page has open-ended ideas for vibe-coding new features, plus a production checklist for what you'd need to address before shipping a real MCP service.
 
 ## Additional resources
 

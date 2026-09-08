@@ -1,29 +1,27 @@
 # Part 2: APS & Authentication
 
-In this section you will build the APS integration layer for your project. By the end you will have an `aps.js` module with a reusable authentication provider and two data helpers, plus a temporary `index.js` that lists all of your Autodesk Forma hubs and projects as JSON — proving that your credentials work and that you can talk to APS.
+In this section you will build the APS integration layer for your project. By the end you will have an `aps.js` module with a reusable authentication provider and two data helpers, plus a temporary `index.js` that lists all of your Autodesk Forma hubs and projects as JSON. That output proves your credentials work and that you can talk to APS.
 
 ## Theory
 
 ### The APS Data Management API
 
-The [APS Data Management API](https://aps.autodesk.com/en/docs/data/v2/overview/) organises your files in a hierarchy: **Hubs → Projects → Folders → Items → Versions**. A Hub is typically your company's Forma or Fusion account; Projects live inside hubs; Folders and Items (files, drawings, models) live inside projects. Everything in this hierarchy is identified by a unique ID.
+The [APS Data Management API](https://aps.autodesk.com/en/docs/data/v2/overview/) organises your files in a hierarchy: **Hubs → Projects → Folders → Items → Versions**. A Hub is typically your company's Forma or Fusion account. Projects live inside hubs. Folders and Items — files, drawings, models — live inside projects. Everything in this hierarchy is identified by a unique ID.
 
 ### 2-legged OAuth (client credentials)
 
 APS uses OAuth 2.0 to protect its APIs. There are two common flows:
 
 - **2-legged (client credentials):** Your application authenticates *as itself* using a client ID and secret. No user has to log in. This is the right choice for server-to-server access where you own the data or have been given service-account access to a hub.
-- **3-legged (authorization code):** A real user is redirected to Autodesk's login page, grants consent, and your app receives a token scoped to *that user's* data.
+- **3-legged (authorization code):** A real user is redirected to Autodesk's login page and grants consent. Your app then receives a token scoped to *that user's* data.
 
 For this workshop we start with 2-legged. Your credentials are already stored as Codespace secrets (`APS_CLIENT_ID` and `APS_CLIENT_SECRET`), so the only thing your code needs to do is exchange them for a short-lived access token whenever it needs to call an API.
 
 ### The authentication provider pattern
 
-Rather than requesting a new token for every API call — or, worse, passing raw tokens around as function arguments — we will create a small object called an **authentication provider**. The rest of the code never touches tokens directly; it just calls `provider.getAccessToken()` and receives a valid token.
+Rather than requesting a new token for every API call — or, worse, passing raw tokens around as function arguments — we will create a small object called an **authentication provider**. The rest of the code never touches tokens directly. It calls `provider.getAccessToken()` and receives a valid token.
 
-> **Why does this pattern matter?**
->
-> In the advanced session of this workshop, participants swap the 2-legged provider for a 3-legged (user-level) provider. Because everything downstream only depends on the `getAccessToken()` interface, *not a single other line of code changes*. Building the abstraction now means the payoff is visible later.
+> **Design note:** In the advanced session of this workshop, participants swap the 2-legged provider for a 3-legged (user-level) provider. Because everything downstream only depends on the `getAccessToken()` interface, *not a single other line of code changes*. Building the abstraction now means the payoff is visible later.
 
 ## Step 1: Authentication provider
 
@@ -68,7 +66,7 @@ export class AppAuthenticationProvider {
 A few things worth noting:
 
 - `SCOPES` is defined once at the module level as `[Scopes.DataRead]`. Centralising it means you only need to change it in one place if you later need additional scopes.
-- `cache` is a plain object with `accessToken` and `expiresAt`. A fresh token is fetched whenever `expiresAt` is less than a minute away (i.e. 0 on first call, or once the token is close to expiring). That one-minute margin matters: a token is valid for an hour, and handing out one with a second left on it means the request can reach APS after it has expired, which shows up as a sporadic `401` that looks random. Refreshing early keeps that out of the picture.
+- `cache` is a plain object with `accessToken` and `expiresAt`. A fresh token is fetched whenever `expiresAt` is less than a minute away — on first call, or once the token is close to expiring. That one-minute margin is what the comment above `getAccessToken()` refers to.
 - `getAccessToken()` takes no arguments — the scopes are fixed by the module-level constant, which is intentional for a 2-legged server-to-server integration.
 
 ## Step 2: List hubs & projects
@@ -91,7 +89,7 @@ export async function getHubsProjects(authenticationProvider) {
 }
 ```
 
-Notice that `DataManagementClient` receives `{ authenticationProvider }` — the SDK calls `getAccessToken` internally whenever it needs a token. You never see the raw token string outside of the provider class. `Promise.all` fetches the projects for every hub concurrently, and the destructuring assignment with default values (`= []`) keeps the code compact when a hub has no projects.
+Notice that `DataManagementClient` receives `{ authenticationProvider }` — the SDK calls `getAccessToken` internally whenever it needs a token. You never see the raw token string outside of the provider class. `Promise.all` fetches the projects for every hub concurrently. The destructuring assignment with default values (`= []`) keeps the code compact when a hub has no projects.
 
 ## Step 3: List folder contents
 

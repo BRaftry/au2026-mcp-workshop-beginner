@@ -58,4 +58,4 @@ You've built a working MCP server. Here's what you'd need to address before ship
 | Error handling | Minimal | Structured error responses, logging, and alerting |
 | MCP client access | Anyone with the binary | Restrict to authorised users; consider authentication at the client layer |
 
-> **Next step:** Watch the advanced session, where Streamable HTTP transport, 3-legged user authentication, an embedded design viewer, and an OAuth proxy that makes clients sign in all get added on top of what you've built.
+> **Next step:** Watch the advanced session. It adds Streamable HTTP transport, 3-legged user authentication, an embedded design viewer, and an OAuth proxy for client sign-in on top of what you've built.
