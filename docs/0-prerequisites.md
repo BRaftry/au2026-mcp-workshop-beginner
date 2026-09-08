@@ -23,8 +23,6 @@ Your APS application needs to be granted access to an existing Forma hub. This t
 2. Go to **Hub Admin → Custom Integrations**.
 3. Add your APS application by its **Client ID**.
 
-> If you don't have a Forma project with admin rights, let us know before the session — the workshop team has a backup project you can use.
-
 ## GitHub, Codespaces, Copilot
 
 1. Sign in to [GitHub](https://github.com) (create a free account if needed).
@@ -36,5 +34,3 @@ Your APS application needs to be granted access to an existing Forma hub. This t
 ## Verify your setup
 
 Once you have your APS credentials and GitHub access, you're ready. The workshop instructor will do a quick setup check at the start of the session.
-
-> **Can't complete the prerequisites?** No problem — let us know before the session. The workshop team has backup APS credentials available so you can still follow along.
