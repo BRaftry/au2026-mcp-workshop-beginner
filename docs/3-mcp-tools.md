@@ -274,6 +274,8 @@ If the server is running correctly, Copilot should call your MCP tool and respon
 > npx @modelcontextprotocol/inspector --cli node index.js -e APS_CLIENT_ID=$APS_CLIENT_ID -e APS_CLIENT_SECRET=$APS_CLIENT_SECRET --method tools/list
 > ```
 >
+> Be patient here, it may take some time while installing it remotely.
+>
 > Call one of them:
 >
 > ```bash

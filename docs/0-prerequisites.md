@@ -25,9 +25,11 @@ Your APS application needs to be granted access to an existing Forma hub. This t
 
 ## GitHub, Codespaces, Copilot
 
+This workshop runs inside a GitHub Codespace. You won't install Node.js, clone locally, or manage a toolchain — everything is preconfigured with an up-to-date npm version and tested package versions, so a corporate laptop that blocks local installs is not a blocker. Every attendee starts from an identical environment, which cuts down on "it works on my machine" issues during the workshop. Because the Codespace runs in the cloud, it will be later easy to access from any machine, share with someone else, or hand off for a colleague to also test.
+
 1. Sign in to [GitHub](https://github.com) (create a free account if needed).
 2. Confirm you have access to **GitHub Codespaces** — available on free accounts with limited hours, and on paid plans.
-3. Confirm you have access to **GitHub Copilot** — available as an individual subscription or through your organisation.
+3. Confirm you have access to **GitHub Copilot** — available as an individual subscription or through your organisation. Copilot Free comes with enough tokens to try this workshop.
 
 > Not sure if you have Copilot? Go to [github.com/settings/copilot](https://github.com/settings/copilot) to check.
 

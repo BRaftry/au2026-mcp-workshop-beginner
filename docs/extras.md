@@ -9,6 +9,8 @@ Use GitHub Copilot to add a new feature to your MCP server. Some ideas:
 - **Search by name**: add a tool that searches for files by name across all folders in a project
 - **Recent changes skill**: extend the `forma-weekly-update` skill to send the summary as a formatted email draft
 
+> **Tip — Skills repository.** Check out as well the [Autodesk Platform Services skills repository](https://github.com/autodesk-platform-services/skills). It's maintained by the Autodesk Developer Advocacy team and may already have some AI agent skills useful to help you save time while building a new APS related feature.
+
 ### Suggested approach
 
 1. Describe the feature to Copilot in plain language.
