@@ -19,7 +19,7 @@ Next, add your APS credentials:
 > **Add the secrets *before* you create your Codespace in Step 2.** Codespace secrets are only injected at start-up. If you create the Codespace first and add the secrets afterwards, you will need to stop and recreate the Codespace for them to take effect.
 
 1. From the repository page, click the **Settings** tab.
-2. In the left sidebar, expand **Secrets and variables** and click **Codespaces**.
+2. In the left sidebar, look for the **Security and quality** block, expand **Secrets and variables**, and click **Codespaces**.
 3. Click **New repository secret** and add the following two secrets:
 
 | Name | Value |
@@ -45,6 +45,8 @@ In this workshop we will be using VS Code in the browser but you can also use VS
 1. In the Codespace browser tab, click the **...** menu (top-left or bottom-left status bar).
 2. Select **Open in Visual Studio Code**.
 3. VS Code will install the GitHub Codespaces extension if needed and reconnect to your Codespace.
+
+![Codespaces options: Code button, Codespaces tab, the "..." menu on your codespace, then Open in Browser or Open in Visual Studio Code](codespaces-options.png)
 
 ## Step 3: Dependencies
 
