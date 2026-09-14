@@ -1,9 +1,8 @@
 {
   "servers": {
-    "APS MCP Server": {
-      "type": "stdio",
-      "command": "node",
-      "args": ["index.js"]
+    "APS MCP Server (Advanced)": {
+      "type": "http",
+      "url": "http://localhost:3000/mcp"
     }
   }
 }
