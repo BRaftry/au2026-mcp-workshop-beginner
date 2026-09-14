@@ -1,28 +1,51 @@
-import { AuthenticationClient, Scopes } from '@aps_sdk/authentication';
+import { AuthenticationClient, Scopes, ResponseType } from '@aps_sdk/authentication';
 import { DataManagementClient } from '@aps_sdk/data-management';
 
 const SCOPES = [Scopes.DataRead];
 
-export class AppAuthenticationProvider {
-    constructor(clientId, clientSecret) {
+export class UserAuthenticationProvider {
+    constructor(clientId, clientSecret, callbackUrl) {
         this.authClient = new AuthenticationClient();
         this.clientId = clientId;
         this.clientSecret = clientSecret;
+        this.callbackUrl = callbackUrl;
         this.cache = {
             accessToken: null,
-            expiresAt: 0,
+            refreshToken: null,
+            expiresAt: 0
         };
     }
 
+    getAuthorizationUrl() {
+        return this.authClient.authorize(this.clientId, ResponseType.Code, this.callbackUrl, SCOPES);
+    }
+
+    async exchangeAuthCode(code) {
+        const credentials = await this.authClient.getThreeLeggedToken(this.clientId, code, this.callbackUrl, { clientSecret: this.clientSecret });
+        this.cache.accessToken = credentials.access_token;
+        this.cache.refreshToken = credentials.refresh_token;
+        this.cache.expiresAt = Date.now() + credentials.expires_in * 1000;
+    }
+
+    async refreshAccessToken(refreshToken) {
+        const credentials = await this.authClient.refreshToken(refreshToken, this.clientId, { clientSecret: this.clientSecret });
+        this.cache.accessToken = credentials.access_token;
+        this.cache.refreshToken = credentials.refresh_token;
+        this.cache.expiresAt = Date.now() + credentials.expires_in * 1000;
+    }
+
     async getAccessToken() {
-        if (this.cache.expiresAt < Date.now() + 60 * 1000) { // refresh a minute early to absorb clock skew and request latency
-            const credentials = await this.authClient.getTwoLeggedToken(this.clientId, this.clientSecret, SCOPES);
-            this.cache.accessToken = credentials.access_token;
-            this.cache.expiresAt = Date.now() + credentials.expires_in * 1000;
+        if (this.cache.accessToken && this.cache.expiresAt > Date.now() + 60 * 1000) { // refresh a minute early to absorb clock skew and request latency
+            return this.cache.accessToken;
+        } else if (this.cache.refreshToken) {
+            await this.refreshAccessToken(this.cache.refreshToken);
+            return this.cache.accessToken;
+        } else {
+            throw new Error('Not authenticated');
         }
-        return this.cache.accessToken;
     }
 }
+
 
 export async function getHubsProjects(authenticationProvider) {
     const client = new DataManagementClient({ authenticationProvider });
@@ -53,4 +76,13 @@ export async function getFolderContents(authenticationProvider, hubId, projectId
             modifiedAt: item.attributes.lastModifiedTime,
             modifiedBy: item.attributes.lastModifiedUserName
         }));
+}
+
+export async function getItemTip(authenticationProvider, projectId, itemId) {
+    const client = new DataManagementClient({ authenticationProvider });
+    const { data } = await client.getItemTip(projectId, itemId);
+    return {
+        name: data.attributes.displayName,
+        derivativeUrn: data.relationships.derivatives.data.id
+    };
 }

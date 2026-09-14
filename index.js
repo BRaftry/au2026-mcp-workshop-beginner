@@ -1,9 +1,9 @@
 import cors from 'cors';
-import { createMcpExpressApp } from '@modelcontextprotocol/express';
+import { createMcpExpressApp, requireBearerAuth, getOAuthProtectedResourceMetadataUrl } from '@modelcontextprotocol/express';
 import { createMcpHandler } from '@modelcontextprotocol/server';
 import { toNodeHandler } from '@modelcontextprotocol/node';
-import { AppAuthenticationProvider } from './aps.js';
 import { createMcpServer } from './mcp.js';
+import { createOAuthProxy } from './proxy.js';
 
 const { APS_CLIENT_ID, APS_CLIENT_SECRET } = process.env;
 if (!APS_CLIENT_ID || !APS_CLIENT_SECRET) {
@@ -12,12 +12,26 @@ if (!APS_CLIENT_ID || !APS_CLIENT_SECRET) {
 }
 const PORT = parseInt(process.env.PORT || '3000');
 const PUBLIC_URL = process.env.PUBLIC_URL || `http://localhost:${PORT}`;
+const CALLBACK_URL = `${PUBLIC_URL}/auth/callback`;
 
-const authenticationProvider = new AppAuthenticationProvider(APS_CLIENT_ID, APS_CLIENT_SECRET);
-const mcpHandler = createMcpHandler(() => createMcpServer(authenticationProvider));
+const { router: authProxyRouter, tokenVerifier } = createOAuthProxy({
+    issuerUrl: new URL(PUBLIC_URL),
+    resourceUrl: new URL(`${PUBLIC_URL}/mcp`),
+    apsClientId: APS_CLIENT_ID,
+    apsClientSecret: APS_CLIENT_SECRET,
+    callbackUrl: CALLBACK_URL,
+});
+const mcpHandler = createMcpHandler((ctx) => createMcpServer(ctx.authInfo.extra.apsAuthenticationProvider, PUBLIC_URL));
+
 
 const app = createMcpExpressApp({ host: '0.0.0.0' });
 app.use(cors());
+app.use(authProxyRouter);
+
+app.use('/mcp', requireBearerAuth({
+    verifier: tokenVerifier,
+    resourceMetadataUrl: getOAuthProtectedResourceMetadataUrl(new URL(`${PUBLIC_URL}/mcp`)),
+}));
 
 const mcpNodeHandler = toNodeHandler(mcpHandler);
 app.all('/mcp', (req, res) => mcpNodeHandler(req, res, req.body));
